@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    
+    我是新开发的项目
   </div>
 </template>
 
