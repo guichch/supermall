@@ -23,10 +23,10 @@ export default {
 </script>
 
 <style scoped>
-@import url("~assets/css/iconfont/iconfont.css");
-.tab-bar-item {
-  text-align: center;
-}
+  @import url("../../../assets/css/iconfont/iconfont.css");
+  .tab-bar-item {
+    text-align: center;
+  }
 
 .active{
   color:red;
