@@ -6,15 +6,124 @@
     <home-swiper :banners="banners"></home-swiper>
     <recommend :recommends="recommend"></recommend>
     <feature></feature>
+    <tab-control :titles="titles"  @tabClick='tabClick'></tab-control>
+    <goods-list :goodsList='goods[currentType].list'></goods-list>
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
   </div>
 </template>
 
 <script>
-import NavBar from "@/components/common/navbar/NavBar";
-import { getHomeMultidata } from "@/network/home.js";
 import HomeSwiper from "./children/HomeSwiper.vue";
 import Recommend from "./children/Recommend.vue";
 import Feature from "./children/Feature.vue";
+
+import GoodsList from '@/components/content/goods/GoodsList.vue';
+import NavBar from "@/components/common/navbar/NavBar";
+import TabControl from "@/components/content/tabControl/TabControl.vue";
+
+import { getHomeMultidata, getHomeGoods } from "@/network/home.js";
+
 export default {
   name: "Home",
   components: {
@@ -22,6 +131,8 @@ export default {
     HomeSwiper,
     Recommend,
     Feature,
+    TabControl,
+    GoodsList,
   },
   data() {
     return {
@@ -29,22 +140,74 @@ export default {
       recommend: null,
       dKeyword: null,
       keywords: null,
+      titles: ["流行", "新款", "精选"],
+      goods: {
+        pop: {
+          page: 1,
+          list: [],
+        },
+        new: {
+          page: 1,
+          list: [],
+        },
+        sell: {
+          page: 1,
+          list: [],
+        },
+      },
+      currentType: 'pop'
     };
   },
   created() {
     // 1、请求多个数据
-    getHomeMultidata().then((res) => {
-      this.banners = res.data.banner.list;
-      this.recommend = res.data.recommend.list;
-      this.dKeyword = res.data.dKeyword;
-      this.keywords = res.data.keywords;
-    });
+    this.getHomeMultidata();
+    // 2、请求商品数据
+    this.getHomeGoods('pop');
+    this.getHomeGoods('new');
+    this.getHomeGoods('sell');
+    console.log(this.goods.pop.list)
+  },
+  methods: {
+
+    /* 
+      请求数据相关的方法
+    */
+    getHomeMultidata() {
+      getHomeMultidata().then((res) => {
+        this.banners = res.data.banner.list;
+        this.recommend = res.data.recommend.list;
+      });
+    },
+    getHomeGoods(type) {
+      let page = this.goods[type].page;
+      getHomeGoods(type, page).then((res) => {
+        // console.log(res);
+        this.goods[type].list.push(...res.data.list);
+        this.goods[type].page += 1;
+      });
+    },
+
+    /* 
+      点击事件相关的方法
+    */
+    tabClick(index) {
+      switch(index) {
+        case 0:
+          this.currentType = 'pop';
+          break;
+        case 1:
+          this.currentType = 'new';
+          break;
+        case 2:
+          this.currentType = 'sell'
+      }
+    }
   },
 };
 </script>
 
 <style scoped>
-#home{
+#home {
   padding-top: 44px;
 }
 .home-nav {
