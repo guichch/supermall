@@ -2,10 +2,15 @@
   <div class="goods-item">
     <a :href="goodsItem.link">
       <img :src="goodsItem.show.img" alt="guichch" />
-      <div>
+      <div class="item-description">
         <p>{{ goodsItem.title }}</p>
-        <span class="price">{{ goodsItem.price }}</span>
-        <span class="collect">{{ goodsItem.cfav }}</span>
+        <div class="details">
+          <span class="price">{{ goodsItem.price }}</span>
+          <span class="star" v-if="!isClicked" @click="starClick">☆</span>
+          <span class="star" v-else>★</span>
+          <span class="collect">{{ goodsItem.cfav }}</span>
+        </div>
+
       </div>
     </a>
   </div>
@@ -21,15 +26,54 @@ export default {
       },
     },
   },
+  data() {
+    return {
+      isClicked: false
+    }
+  },
+  methods: {
+    starClick() {
+      this.isClicked = !this.isClicked;
+      return false
+    }
+  }
 };
 </script>
 
 <style>
 .goods-item {
   width: 48%;
+  position: relative;
+  padding-bottom: 40px;
 }
 
 .goods-item img {
   width: 100%;
+  /* margin-bottom: 40px; */
+  border-radius: 5px;
 }
+
+.item-description{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.item-description p{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 3px;
+}
+
+.details{
+  display: flex;
+  justify-content: space-around;
+  width: 50%;
+  margin: 0 auto;
+}
+
 </style>

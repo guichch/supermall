@@ -42,6 +42,7 @@ export default {
   position: sticky;
   top: 44px;
   background-color: #fff;
+  z-index: 999;
 }
 
 .tab-control-item {

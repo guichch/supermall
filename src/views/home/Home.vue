@@ -3,113 +3,18 @@
     <nav-bar class="home-nav">
       <template #center> 购物街 </template>
     </nav-bar>
-    <home-swiper :banners="banners"></home-swiper>
-    <recommend :recommends="recommend"></recommend>
-    <feature></feature>
-    <tab-control :titles="titles"  @tabClick='tabClick'></tab-control>
-    <goods-list :goodsList='goods[currentType].list'></goods-list>
-    <ul>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
+    <scroll class="content" ref="scroll">
+      <home-swiper :banners="banners"></home-swiper>
+      <recommend :recommends="recommend"></recommend>
+      <feature></feature>
+
+      <tab-control :titles="titles" @tabClick="tabClick"></tab-control>
+      <goods-list :goodsList="goods[currentType].list"></goods-list>
+    </scroll>
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
+    <!--     <tab-control :titles="titles" @tabClick="tabClick"></tab-control>
+    <goods-list :goodsList="goods[currentType].list"></goods-list> -->
+
   </div>
 </template>
 
@@ -118,11 +23,13 @@ import HomeSwiper from "./children/HomeSwiper.vue";
 import Recommend from "./children/Recommend.vue";
 import Feature from "./children/Feature.vue";
 
-import GoodsList from '@/components/content/goods/GoodsList.vue';
+import GoodsList from "@/components/content/goods/GoodsList.vue";
 import NavBar from "@/components/common/navbar/NavBar";
 import TabControl from "@/components/content/tabControl/TabControl.vue";
 
 import { getHomeMultidata, getHomeGoods } from "@/network/home.js";
+import Scroll from "@/components/common/scroll/Scroll.vue";
+import BackTop from '@/components/content/backTop/BackTop.vue';
 
 export default {
   name: "Home",
@@ -133,6 +40,8 @@ export default {
     Feature,
     TabControl,
     GoodsList,
+    Scroll,
+    BackTop,
   },
   data() {
     return {
@@ -155,20 +64,19 @@ export default {
           list: [],
         },
       },
-      currentType: 'pop'
+      currentType: "pop",
+      isShowBackTop: false,
     };
   },
   created() {
     // 1、请求多个数据
     this.getHomeMultidata();
     // 2、请求商品数据
-    this.getHomeGoods('pop');
-    this.getHomeGoods('new');
-    this.getHomeGoods('sell');
-    console.log(this.goods.pop.list)
+    this.getHomeGoods("pop");
+    this.getHomeGoods("new");
+    this.getHomeGoods("sell");
   },
   methods: {
-
     /* 
       请求数据相关的方法
     */
@@ -191,24 +99,38 @@ export default {
       点击事件相关的方法
     */
     tabClick(index) {
-      switch(index) {
+      switch (index) {
         case 0:
-          this.currentType = 'pop';
+          this.currentType = "pop";
           break;
         case 1:
-          this.currentType = 'new';
+          this.currentType = "new";
           break;
         case 2:
-          this.currentType = 'sell'
+          this.currentType = "sell";
       }
+    },
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0)
     }
   },
+  mounted() {
+    this.$refs.scroll.scroll.on('scroll', (position) => {
+      this.isShowBackTop = -position.y > 1000;
+    })
+    this.$refs.scroll.scroll.on('pullingUp', () => {
+      this.getHomeGoods(this.currentType);
+      this.$refs.scroll.scroll.finishPullUp();
+    })
+  }
 };
 </script>
 
 <style scoped>
 #home {
-  padding-top: 44px;
+  /* padding-top: 44px; */
+  position: relative;
+  height: calc(100vh - 49px);
 }
 .home-nav {
   background-color: var(--color-tint);
@@ -218,5 +140,14 @@ export default {
   left: 0;
   right: 0;
   z-index: 9;
+}
+
+.content {
+  /* height: 600px; */
+  /* overflow: hidden; */
+  /* background-color: #bfa; */
+  position: absolute;
+  top: 44px;
+  bottom: 0;
 }
 </style>
