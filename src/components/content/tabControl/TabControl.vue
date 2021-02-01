@@ -39,10 +39,7 @@ export default {
 <style>
 .tab-control {
   display: flex;
-  position: sticky;
-  top: 44px;
   background-color: #fff;
-  z-index: 999;
 }
 
 .tab-control-item {

@@ -1,18 +1,15 @@
 <template>
   <div class="goods-item">
-    <a :href="goodsItem.link">
-      <img :src="goodsItem.show.img" alt="guichch" />
-      <div class="item-description">
-        <p>{{ goodsItem.title }}</p>
-        <div class="details">
-          <span class="price">{{ goodsItem.price }}</span>
-          <span class="star" v-if="!isClicked" @click="starClick">☆</span>
-          <span class="star" v-else>★</span>
-          <span class="collect">{{ goodsItem.cfav }}</span>
-        </div>
-
+    <img :src="goodsItem.show.img" alt="guichch" @click="imgClick" />
+    <div class="item-description">
+      <p>{{ goodsItem.title }}</p>
+      <div class="details">
+        <span class="price">{{ goodsItem.price }}</span>
+        <span class="star" v-if="!isClicked" @click="starClick">☆</span>
+        <span class="star" v-else>★</span>
+        <span class="collect">{{ goodsItem.cfav }}</span>
       </div>
-    </a>
+    </div>
   </div>
 </template>
 
@@ -28,15 +25,19 @@ export default {
   },
   data() {
     return {
-      isClicked: false
-    }
+      isClicked: false,
+    };
   },
   methods: {
     starClick() {
       this.isClicked = !this.isClicked;
-      return false
-    }
-  }
+      return false;
+    },
+    imgClick() {
+      this.$router.push("/detail/" + this.goodsItem.iid);
+    },
+  },
+  
 };
 </script>
 
@@ -53,7 +54,7 @@ export default {
   border-radius: 5px;
 }
 
-.item-description{
+.item-description {
   position: absolute;
   left: 0;
   right: 0;
@@ -62,18 +63,17 @@ export default {
   font-size: 12px;
 }
 
-.item-description p{
+.item-description p {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-bottom: 3px;
 }
 
-.details{
+.details {
   display: flex;
   justify-content: space-around;
   width: 50%;
   margin: 0 auto;
 }
-
 </style>

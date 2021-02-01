@@ -19,7 +19,8 @@ export default {
       click: true,
       observeDOM: true,
       probeType: 3,
-      pullUpLoad: true
+      pullUpLoad: true,
+      pullDownRefresh: false
     })
   },
   methods: {

@@ -130,27 +130,11 @@
   <div class="box1">
     <div class="box2"></div>
   </div>
-  <script src='./core.js'></script>
   <script>
-    BScroll.use(Pullup);
-    const bscroll = new BScroll('.box', {
-      probeType: 3,
-      pullUpload: true
-    })
-/*     bscroll.on('scroll', (position) => {
-      console.log(position);
-    })
- */
-
-    bscroll.on('scrollCance', () => {
-      console.log('上拉加载更多')
-    })
-
-    const btn = document.querySelector('.btn');
-/*     btn.onclick = function() {
-      console.log('你点我干嘛')
-    } */
-
+    
+    setInterval(() => {
+      console.log(1)
+    }, window.Infinity)
   </script>
 </body>
 </html>

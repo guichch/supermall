@@ -8,13 +8,17 @@
       <recommend :recommends="recommend"></recommend>
       <feature></feature>
 
-      <tab-control :titles="titles" @tabClick="tabClick"></tab-control>
+      <tab-control
+        :titles="titles"
+        @tabClick="tabClick"
+        ref="tabControl1"
+      ></tab-control>
       <goods-list :goodsList="goods[currentType].list"></goods-list>
     </scroll>
+    <tab-control :titles="titles" @tabClick="tabClick" class="tab-control" v-show="isTabFixed" ref="tabControl2"></tab-control>  
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
     <!--     <tab-control :titles="titles" @tabClick="tabClick"></tab-control>
     <goods-list :goodsList="goods[currentType].list"></goods-list> -->
-
   </div>
 </template>
 
@@ -29,7 +33,7 @@ import TabControl from "@/components/content/tabControl/TabControl.vue";
 
 import { getHomeMultidata, getHomeGoods } from "@/network/home.js";
 import Scroll from "@/components/common/scroll/Scroll.vue";
-import BackTop from '@/components/content/backTop/BackTop.vue';
+import BackTop from "@/components/content/backTop/BackTop.vue";
 
 export default {
   name: "Home",
@@ -66,6 +70,9 @@ export default {
       },
       currentType: "pop",
       isShowBackTop: false,
+      tabControlTop: 0,
+      isTabFixed: false,
+      scrollY: 0
     };
   },
   created() {
@@ -84,14 +91,17 @@ export default {
       getHomeMultidata().then((res) => {
         this.banners = res.data.banner.list;
         this.recommend = res.data.recommend.list;
+        window.setTimeout(() => {
+          this.tabControlTop = this.$refs.tabControl1.$el.offsetTop;
+        }, 100);
       });
     },
     getHomeGoods(type) {
       let page = this.goods[type].page;
       getHomeGoods(type, page).then((res) => {
-        // console.log(res);
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
+        this.$refs.scroll.scroll.refresh();
       });
     },
 
@@ -109,19 +119,32 @@ export default {
         case 2:
           this.currentType = "sell";
       }
+      this.$refs.tabControl1.currentIndex = index;
+      this.$refs.tabControl2.currentIndex = index;
     },
     backClick() {
-      this.$refs.scroll.scrollTo(0, 0)
-    }
+      this.$refs.scroll.scrollTo(0, 0);
+    },
   },
   mounted() {
-    this.$refs.scroll.scroll.on('scroll', (position) => {
+    this.$refs.scroll.scroll.on("scroll", (position) => {
+      // 1、backTop是否显示
       this.isShowBackTop = -position.y > 1000;
-    })
-    this.$refs.scroll.scroll.on('pullingUp', () => {
+
+      // 2、tabControl吸顶
+      this.isTabFixed = -position.y > this.tabControlTop
+    });
+    this.$refs.scroll.scroll.on("pullingUp", () => {
       this.getHomeGoods(this.currentType);
       this.$refs.scroll.scroll.finishPullUp();
-    })
+    });
+  },
+  activated() {
+    this.$refs.scroll.scroll.refresh();
+    this.$refs.scroll.scrollTo(0, this.scrollY, 0)
+  },
+  deactivated() {
+    this.scrollY = this.$refs.scroll.scroll.y
   }
 };
 </script>
@@ -135,19 +158,20 @@ export default {
 .home-nav {
   background-color: var(--color-tint);
   color: white;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9;
+  /* position: fixed; */
 }
 
 .content {
   /* height: 600px; */
-  /* overflow: hidden; */
+  overflow: hidden;
   /* background-color: #bfa; */
   position: absolute;
   top: 44px;
   bottom: 0;
+}
+
+.tab-control{
+  position: relative;
+  z-index: 9;
 }
 </style>

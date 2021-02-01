@@ -17,7 +17,7 @@ export default {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 0px;
     background-color: #f6f6f6;
     display: flex;
     justify-content: space-around;
