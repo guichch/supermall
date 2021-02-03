@@ -33,3 +33,9 @@ export class Shop {
     this.goodsCount = shopInfo.cGoods
   }
 }
+
+export class Params {
+  constructor(itemParams) {
+    this.tables = itemParams.rule.tables[0];
+  }
+}

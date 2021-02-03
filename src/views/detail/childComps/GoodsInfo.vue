@@ -78,9 +78,13 @@ export default {
 
 .info-service{
   display: flex;
-  justify-content: space-between;
-  font-size: 14px;
+  justify-content: space-around;
+  font-size: 12px;
   padding: 20px 2px;
   border-bottom: 2px solid rgba(100, 100, 100, .1);
+  flex-wrap: nowrap;
+  .info-service-item {
+    flex-shrink: 1;
+  }
 }
 </style>

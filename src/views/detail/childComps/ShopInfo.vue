@@ -22,9 +22,12 @@
           <span v-else class="item-evaluate">低</span>
         </p>
       </div>
-    </div>
 
-    <ul>
+    </div>
+    <div class="enter-shop">
+      进店逛逛
+    </div>
+    <!-- <ul>
       <li></li>
       <li></li>
       <li></li>
@@ -125,7 +128,7 @@
       <li></li>
       <li></li>
       <li></li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
@@ -150,7 +153,8 @@ export default {
 
 <style scoped lang='less'>
 .shop-info{
-  padding: 10px 2px;
+  padding: 10px 2px 20px;
+  border-bottom: 2px solid rgba(100, 100, 100, .1);
   .shop-title {
     padding: 20px 0;
     margin-left: 5px;
@@ -212,11 +216,22 @@ export default {
     }
 
   }
+  .enter-shop {
+    width: 40%;
+    height: 30px;
+    margin: 0 auto;
+    background-color: rgba(139, 138, 138, 0.1);
+    font-size: 14px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 5px;
+  }
 }
 
 .shop-info::after{
   content: '';
   display: table;
   clear: both;
+  
 }
 </style>
