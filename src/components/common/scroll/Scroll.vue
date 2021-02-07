@@ -20,7 +20,8 @@ export default {
       observeDOM: true,
       probeType: 3,
       pullUpLoad: true,
-      pullDownRefresh: false
+      pullDownRefresh: false,
+      useTransition: false
     })
   },
   methods: {

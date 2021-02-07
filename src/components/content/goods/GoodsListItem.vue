@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item">
-    <img :src="goodsItem.show.img" alt="guichch" @click="imgClick" />
+    <img :src="showImage" alt="guichch" @click="imgClick" />
     <div class="item-description">
       <p>{{ goodsItem.title }}</p>
       <div class="details">
@@ -37,11 +37,17 @@ export default {
       this.$router.push("/detail/" + this.goodsItem.iid);
     },
   },
+
+  computed: {
+    showImage() {
+      return this.goodsItem.image || this.goodsItem.show.img
+    }
+  }
   
 };
 </script>
 
-<style>
+<style scoped lang='less'>
 .goods-item {
   width: 48%;
   position: relative;
@@ -75,5 +81,8 @@ export default {
   justify-content: space-around;
   width: 50%;
   margin: 0 auto;
+  .price {
+    color: var(--color-high-text);
+  }
 }
 </style>

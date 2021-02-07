@@ -7,13 +7,16 @@
       <shop-info :shopInfo="shop"></shop-info>
       <detail-info :detailInfo="detailInfo" @imgLoad="imgLoad"></detail-info>
       <detail-params :detailParams='detailParams'></detail-params>
+      <detail-item-info :itemInfo="itemInfo.tables"></detail-item-info>
+      <user-evaluation :userEval="userEvaluation"></user-evaluation>
+      <goods-list :goodsList='recommend'></goods-list>
     </scroll>
   </div>
 </template>
 
 <script>
 let timer = null;
-import { getDetail, Goods, Shop, Params } from "@/network/detail";
+import { getDetail, getRecommend, Goods, Shop, Params, ItemInfo } from "@/network/detail";
 import Scroll from "@/components/common/scroll/Scroll.vue";
 
 import DetailNavBar from "./childComps/DetailNavBar";
@@ -22,6 +25,9 @@ import GoodsInfo from "./childComps/GoodsInfo.vue";
 import ShopInfo from "./childComps/ShopInfo.vue";
 import DetailInfo from "./childComps/DetailInfo.vue";
 import DetailParams from './childComps/DetailParams.vue';
+import DetailItemInfo from './childComps/DetailItemInfo.vue';
+import UserEvaluation from './childComps/UserEvaluation.vue';
+import GoodsList from '@/components/content/goods/GoodsList.vue';
 
 export default {
   name: "Detail",
@@ -33,6 +39,9 @@ export default {
     Scroll,
     DetailInfo,
     DetailParams,
+    DetailItemInfo,
+    UserEvaluation,
+    GoodsList
   },
   data() {
     return {
@@ -41,7 +50,10 @@ export default {
       goods: {},
       shop: {},
       detailInfo: {},
-      detailParams: {}
+      detailParams: {},
+      itemInfo: [],
+      userEvaluation: {},
+      recommend: []
     };
   },
   created() {
@@ -66,7 +78,23 @@ export default {
 
       // 获取参数信息
       this.detailParams = new Params(res.result.itemParams)
+
+      // 获取item信息
+      this.itemInfo = new ItemInfo(res.result.itemParams)
+
+      // 获取用户评价信息
+      if (res.result.rate.cRate !== 0) {
+
+        this.userEvaluation = res.result.rate.list[0]
+      }
+      
     });
+
+    // 请求推荐数据
+    getRecommend().then(res => {
+      console.log(res)
+      this.recommend = res.data.list
+    })
   },
 
   methods: {
