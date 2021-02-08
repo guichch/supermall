@@ -30,7 +30,7 @@ export default {
 
 <style scoped lang='less'>
 .detail-params {
-  margin-top: 20px;
+  padding-top: 20px;
   padding-bottom: 20px;
   border-bottom: 2px solid rgba(100, 100, 100, 0.1);
 }

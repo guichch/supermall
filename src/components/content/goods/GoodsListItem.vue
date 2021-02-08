@@ -34,7 +34,12 @@ export default {
       return false;
     },
     imgClick() {
-      this.$router.push("/detail/" + this.goodsItem.iid);
+      if (this.goodsItem.iid) {
+        this.$router.push("/detail/" + this.goodsItem.iid);
+      } else {
+        this.$router.push("/detail/" + this.goodsItem.item_id);
+      }
+      
     },
   },
 

@@ -4,9 +4,9 @@
       <template #center> 购物街 </template>
     </nav-bar>
     <scroll class="content" ref="scroll">
-      <home-swiper :banners="banners"></home-swiper>
+      <home-swiper :banners="banners" @swiperImgLoad="swiperImgLoad"></home-swiper>
       <recommend :recommends="recommend"></recommend>
-      <feature></feature>
+      <feature ></feature>
 
       <tab-control
         :titles="titles"
@@ -15,7 +15,13 @@
       ></tab-control>
       <goods-list :goodsList="goods[currentType].list"></goods-list>
     </scroll>
-    <tab-control :titles="titles" @tabClick="tabClick" class="tab-control" v-show="isTabFixed" ref="tabControl2"></tab-control>  
+    <tab-control
+      :titles="titles"
+      @tabClick="tabClick"
+      class="tab-control"
+      v-show="isTabFixed"
+      ref="tabControl2"
+    ></tab-control>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
     <!--     <tab-control :titles="titles" @tabClick="tabClick"></tab-control>
     <goods-list :goodsList="goods[currentType].list"></goods-list> -->
@@ -72,7 +78,7 @@ export default {
       isShowBackTop: false,
       tabControlTop: 0,
       isTabFixed: false,
-      scrollY: 0
+      scrollY: 0,
     };
   },
   created() {
@@ -91,9 +97,6 @@ export default {
       getHomeMultidata().then((res) => {
         this.banners = res.data.banner.list;
         this.recommend = res.data.recommend.list;
-        window.setTimeout(() => {
-          this.tabControlTop = this.$refs.tabControl1.$el.offsetTop;
-        }, 100);
       });
     },
     getHomeGoods(type) {
@@ -125,14 +128,22 @@ export default {
     backClick() {
       this.$refs.scroll.scrollTo(0, 0);
     },
+
+    /* 
+      图片加载相关的方法
+    */
+    swiperImgLoad() {
+      this.tabControlTop = this.$refs.tabControl1.$el.offsetTop;
+      console.log(this.tabControlTop);
+    },
   },
   mounted() {
     this.$refs.scroll.scroll.on("scroll", (position) => {
       // 1、backTop是否显示
       this.isShowBackTop = -position.y > 1000;
-
+      console.log(position)
       // 2、tabControl吸顶
-      this.isTabFixed = -position.y > this.tabControlTop
+      this.isTabFixed = -position.y > this.tabControlTop;
     });
     this.$refs.scroll.scroll.on("pullingUp", () => {
       this.getHomeGoods(this.currentType);
@@ -141,11 +152,11 @@ export default {
   },
   activated() {
     this.$refs.scroll.scroll.refresh();
-    this.$refs.scroll.scrollTo(0, this.scrollY, 0)
+    this.$refs.scroll.scrollTo(0, this.scrollY, 0);
   },
   deactivated() {
-    this.scrollY = this.$refs.scroll.scroll.y
-  }
+    this.scrollY = this.$refs.scroll.scroll.y;
+  },
 };
 </script>
 
@@ -170,7 +181,7 @@ export default {
   bottom: 0;
 }
 
-.tab-control{
+.tab-control {
   position: relative;
   z-index: 9;
 }

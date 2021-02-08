@@ -23,6 +23,10 @@ export default {
       pullDownRefresh: false,
       useTransition: false
     })
+
+    this.scroll.on('scroll', position => {
+      this.$emit('scrolling', position);
+    })
   },
   methods: {
     scrollTo(x, y, time=300) {
