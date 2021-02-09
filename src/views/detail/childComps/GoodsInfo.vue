@@ -78,7 +78,7 @@ export default {
 
 .info-service{
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   font-size: 12px;
   padding: 20px 2px;
   border-bottom: 2px solid rgba(100, 100, 100, .1);

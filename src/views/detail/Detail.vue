@@ -18,6 +18,8 @@
       ></user-evaluation>
       <goods-list :goodsList="recommend" ref="recommend"></goods-list>
     </scroll>
+    <detail-bottom-bar />
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -42,6 +44,8 @@ import DetailParams from "./childComps/DetailParams.vue";
 import DetailItemInfo from "./childComps/DetailItemInfo.vue";
 import UserEvaluation from "./childComps/UserEvaluation.vue";
 import GoodsList from "@/components/content/goods/GoodsList.vue";
+import DetailBottomBar from './childComps/DetailBottomBar.vue';
+import {backTop} from '@/common/backTop'
 
 export default {
   name: "Detail",
@@ -56,6 +60,7 @@ export default {
     DetailItemInfo,
     UserEvaluation,
     GoodsList,
+    DetailBottomBar,
   },
   data() {
     return {
@@ -169,6 +174,8 @@ export default {
     }
   },
 
+  mixins: [backTop]
+
 /*   mounted() {
     console.log(this.$refs.scroll.scroll);
     this.$refs.scroll.scroll.on("scorll", (position) => {
@@ -192,7 +199,8 @@ export default {
     background-color: #fff;
   }
   .content {
-    height: calc(100vh - 44px);
+    height: calc(100vh - 44px - 49px);
+    overflow: hidden;
   }
 }
 </style>  

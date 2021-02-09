@@ -39,7 +39,9 @@ import TabControl from "@/components/content/tabControl/TabControl.vue";
 
 import { getHomeMultidata, getHomeGoods } from "@/network/home.js";
 import Scroll from "@/components/common/scroll/Scroll.vue";
-import BackTop from "@/components/content/backTop/BackTop.vue";
+
+import {backTop} from '@/common/backTop'
+// import BackTop from "@/components/content/backTop/BackTop.vue";
 
 export default {
   name: "Home",
@@ -51,8 +53,9 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop,
+    // BackTop,
   },
+  mixins: [backTop],
   data() {
     return {
       banners: null,
@@ -75,7 +78,7 @@ export default {
         },
       },
       currentType: "pop",
-      isShowBackTop: false,
+      // isShowBackTop: false,
       tabControlTop: 0,
       isTabFixed: false,
       scrollY: 0,
@@ -125,9 +128,9 @@ export default {
       this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
     },
-    backClick() {
+/*     backClick() {
       this.$refs.scroll.scrollTo(0, 0);
-    },
+    }, */
 
     /* 
       图片加载相关的方法
@@ -140,8 +143,8 @@ export default {
   mounted() {
     this.$refs.scroll.scroll.on("scroll", (position) => {
       // 1、backTop是否显示
-      this.isShowBackTop = -position.y > 1000;
-      console.log(position)
+/*       this.isShowBackTop = -position.y > 1000;
+      console.log(position) */
       // 2、tabControl吸顶
       this.isTabFixed = -position.y > this.tabControlTop;
     });
