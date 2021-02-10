@@ -18,7 +18,7 @@
       ></user-evaluation>
       <goods-list :goodsList="recommend" ref="recommend"></goods-list>
     </scroll>
-    <detail-bottom-bar />
+    <detail-bottom-bar @addToCart='addToCart' />
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
@@ -32,6 +32,7 @@ import {
   Shop,
   Params,
   ItemInfo,
+  Product
 } from "@/network/detail";
 import Scroll from "@/components/common/scroll/Scroll.vue";
 
@@ -111,7 +112,6 @@ export default {
 
     // 请求推荐数据
     getRecommend().then((res) => {
-      console.log(res);
       this.recommend = res.data.list;
     });
   },
@@ -171,6 +171,14 @@ export default {
           this.$refs.nav.currentIndex = this.navCurrentIndex
         }
       } */
+    },
+
+    /* 
+      加入购物车
+    */
+    addToCart() {
+      const product = new Product(this.topImgs[0], this.goods, this.iid)
+      this.$store.dispatch('addToCart', product);
     }
   },
 

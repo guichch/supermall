@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="wrapper">
-      <button class="add-to-cart">加入购物车</button>
+      <button class="add-to-cart" @click="addToCart">加入购物车</button>
       <button class="purchase">购买</button>
     </div>
   </div>
@@ -39,6 +39,10 @@ export default {
   methods: {
     collect() {
       this.isShow = !this.isShow
+    },
+
+    addToCart() {
+      this.$emit('addToCart');
     }
   }
 };

@@ -51,3 +51,13 @@ export class ItemInfo {
     this.tables = itemParams.info.set;
   }
 }
+
+export class Product {
+  constructor(img, goods, iid) {
+    this.img = img;
+    this.title = goods.title;
+    this.price = goods.realPrice;
+    this.desc = goods.desc;
+    this.iid = iid;
+  }
+}
