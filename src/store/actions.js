@@ -8,7 +8,8 @@ export default {
       }
     }
     product.count = 1;
+    product.isChecked = true;
     commit('addToCart', product)
-  }
+  },
 
 }

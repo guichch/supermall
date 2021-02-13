@@ -167,7 +167,7 @@ export default {
 #home {
   /* padding-top: 44px; */
   position: relative;
-  height: calc(100vh - 49px);
+  height: calc(100vh - var(--vh-offset, 0px) - 49px);
 }
 .home-nav {
   background-color: var(--color-tint);

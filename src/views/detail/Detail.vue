@@ -207,7 +207,7 @@ export default {
     background-color: #fff;
   }
   .content {
-    height: calc(100vh - 44px - 49px);
+    height: calc(100vh - var(--vh-offset, 0px) - 44px - 49px);
     overflow: hidden;
   }
 }

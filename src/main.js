@@ -4,10 +4,11 @@ import router from '@/router'
 import store from '@/store'
 import 'normalize.css'
 import '@/assets/css/iconfont/iconfont.css'
-/* import less from 'less'
-Vue.use(less) */
+import vhCheck from 'vh-check'
 
 Vue.config.productionTip = false
+
+const test = vhCheck()
 
 new Vue({
   router,
