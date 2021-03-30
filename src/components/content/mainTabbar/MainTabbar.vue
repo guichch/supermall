@@ -5,7 +5,7 @@
         <i class="iconfont icon-htmal5icon06"></i>
         <div>主页</div>
       </tabbar-item>
-      <tabbar-item path="/categary">
+      <tabbar-item path="/category">
         <i class="iconfont icon-fenlei"></i>
         <div>分类</div>
       </tabbar-item>
